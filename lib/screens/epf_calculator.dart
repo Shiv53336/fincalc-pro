@@ -90,7 +90,7 @@ class _EpfCalculatorScreenState extends State<EpfCalculatorScreen> {
             decoration: BoxDecoration(color: AppColors.accentLight, borderRadius: BorderRadius.circular(10)),
             child: const Text(
               'ℹ️ EPF rate: 8.25% (FY 2024-25). Employee contributes 12% of Basic+DA. '
-              'Employer contributes 12% — split as 8.33% to EPS (pension, max ₹15K salary) and 3.67% to EPF. '
+              'Employer contributes 12% — split as 8.33% to EPS (pension, max Rs.15K salary) and 3.67% to EPF. '
               'EPF withdrawal is tax-free after 5 years of continuous service.',
               style: TextStyle(fontSize: 10, color: AppColors.textMed, height: 1.5),
             ),

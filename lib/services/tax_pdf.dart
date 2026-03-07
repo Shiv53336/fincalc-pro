@@ -136,7 +136,7 @@ class TaxPdfGenerator {
     return pw.Padding(
       padding: const pw.EdgeInsets.only(bottom: 4),
       child: pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-        pw.Text('  •  ', style: const pw.TextStyle(color: _textMed, fontSize: 8)),
+        pw.Text('  -  ', style: const pw.TextStyle(color: _textMed, fontSize: 8)),
         pw.Expanded(child: pw.Text(text, style: const pw.TextStyle(color: _textMed, fontSize: 8))),
       ]),
     );

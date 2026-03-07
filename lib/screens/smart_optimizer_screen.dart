@@ -32,19 +32,19 @@ class _SmartTaxOptimizerScreenState extends State<SmartTaxOptimizerScreen> {
 
     TaxResult r1 = TaxEngine.calculateOldRegime(grossSalary: _salary, deduction80C: 150000);
     double s1 = base.totalTax - r1.totalTax;
-    if (s1 > 0) recs.add(_Rec(1, 'Max out 80C (₹1.5L)', 'Invest in ELSS, PPF, EPF, or NSC to claim full deduction', s1, 'Not invested'));
+    if (s1 > 0) recs.add(_Rec(1, 'Max out 80C (Rs.1.5L)', 'Invest in ELSS, PPF, EPF, or NSC to claim full deduction', s1, 'Not invested'));
 
     TaxResult r2 = TaxEngine.calculateOldRegime(grossSalary: _salary, deduction80C: 150000, deduction80D: 75000);
     double s2 = r1.totalTax - r2.totalTax;
-    if (s2 > 0) recs.add(_Rec(2, 'Health Insurance (80D)', '₹25K self + ₹50K parents (senior) = ₹75K deduction', s2, 'Recommended'));
+    if (s2 > 0) recs.add(_Rec(2, 'Health Insurance (80D)', 'Rs.25K self + Rs.50K parents (senior) = Rs.75K deduction', s2, 'Recommended'));
 
     TaxResult r3 = TaxEngine.calculateOldRegime(grossSalary: _salary, deduction80C: 150000, deduction80D: 75000, deductionNPS: 50000);
     double s3 = r2.totalTax - r3.totalTax;
-    if (s3 > 0) recs.add(_Rec(3, 'NPS Contribution (80CCD)', 'Extra ₹50,000 deduction over 80C. Great for retirement.', s3, 'Not started'));
+    if (s3 > 0) recs.add(_Rec(3, 'NPS Contribution (80CCD)', 'Extra Rs.50,000 deduction over 80C. Great for retirement.', s3, 'Not started'));
 
     TaxResult r4 = TaxEngine.calculateOldRegime(grossSalary: _salary, deduction80C: 150000, deduction80D: 75000, deductionNPS: 50000, homeLoanInterest: 200000);
     double s4 = r3.totalTax - r4.totalTax;
-    if (s4 > 0) recs.add(_Rec(4, 'Home Loan Interest (24b)', 'Up to ₹2L deduction on home loan interest', s4, 'If applicable'));
+    if (s4 > 0) recs.add(_Rec(4, 'Home Loan Interest (24b)', 'Up to Rs.2L deduction on home loan interest', s4, 'If applicable'));
 
     return recs;
   }
@@ -65,7 +65,7 @@ class _SmartTaxOptimizerScreenState extends State<SmartTaxOptimizerScreen> {
           ResultCard(children: [
             Text('You could save up to', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13)),
             const SizedBox(height: 4),
-            Text(_salary > 0 ? formatRupee(totalSavings) : '₹---',
+            Text(_salary > 0 ? formatRupee(totalSavings) : 'Rs.---',
                 style: const TextStyle(color: Color(0xFF48BB78), fontSize: 36, fontWeight: FontWeight.w800)),
             const SizedBox(height: 4),
             Text('by optimizing your investments', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13)),

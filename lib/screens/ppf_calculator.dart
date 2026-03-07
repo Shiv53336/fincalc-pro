@@ -118,7 +118,7 @@ class _PpfCalculatorScreenState extends State<PpfCalculatorScreen> {
             child: const Text(
               'ℹ️ PPF has a 15-year lock-in period (extendable in 5-year blocks). '
               'Current rate: 7.1% p.a. (set by government quarterly). '
-              'Max investment: ₹1,50,000/year. Interest and maturity are fully tax-free.',
+              'Max investment: Rs.1,50,000/year. Interest and maturity are fully tax-free.',
               style: TextStyle(fontSize: 10, color: AppColors.textMed, height: 1.5),
             ),
           ),

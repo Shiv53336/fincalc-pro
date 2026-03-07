@@ -82,7 +82,7 @@ class HomeScreen extends StatelessWidget {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: SliverGrid.count(
-            crossAxisCount: 2, mainAxisSpacing: 12, crossAxisSpacing: 12, childAspectRatio: 1.3,
+            crossAxisCount: 2, mainAxisSpacing: 12, crossAxisSpacing: 12, childAspectRatio: 1.15,
             children: [
               _QuickCard(icon: Icons.receipt_long_rounded, label: 'Income Tax', sub: 'Old vs New Regime', color: AppColors.accent,
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const IncomeTaxInputScreen()))),
@@ -169,7 +169,7 @@ class _QuickCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(16),
           border: Border.all(color: AppColors.borderLight),
@@ -178,8 +178,8 @@ class _QuickCard extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(width: 42, height: 42, decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
               child: Icon(icon, color: color, size: 22)),
-          const SizedBox(height: 10),
-          Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.text)),
+          const SizedBox(height: 8),
+          Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.text)),
           const SizedBox(height: 2),
           Text(sub, style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
         ]),

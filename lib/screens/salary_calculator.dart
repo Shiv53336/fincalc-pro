@@ -34,13 +34,13 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
     // Standard CTC breakdown
     _basic = _ctc * 0.40; // 40% of CTC
     _hra = _basic * 0.50; // 50% of basic (metro)
-    _employerPF = min(_basic * 0.12, 21600 * 12 / 12 * 12); // 12% of basic (capped at ₹1800/mo for EPS portion)
+    _employerPF = min(_basic * 0.12, 21600 * 12 / 12 * 12); // 12% of basic (capped at Rs.1800/mo for EPS portion)
     _employerPF = _basic * 0.12; // Full 12% employer contribution
     _specialAllowance = _ctc - _basic - _hra - _employerPF;
 
     // Deductions
     _employeePF = _basic * 0.12; // 12% of basic
-    _professionalTax = 2500 * 12; // ₹2,500/month (Maharashtra)
+    _professionalTax = 2500 * 12; // Rs.2,500/month (Maharashtra)
 
     // Income tax (New Regime)
     TaxResult taxResult = TaxEngine.calculateNewRegime(grossSalary: _ctc - _employerPF);
@@ -123,7 +123,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
             // Deductions Breakdown
             _BreakdownCard(title: 'Deductions (Annual)', rows: [
               _BRow('Employee PF', formatRupee(_employeePF), '12% of Basic'),
-              _BRow('Professional Tax', formatRupee(_professionalTax), '₹2,500/mo'),
+              _BRow('Professional Tax', formatRupee(_professionalTax), 'Rs.2,500/mo'),
               _BRow('Income Tax (New)', formatRupee(_incomeTax), 'FY 2025-26'),
             ], total: _BRow('Total Deductions', formatRupee(_employeePF + _professionalTax + _incomeTax), '')),
 

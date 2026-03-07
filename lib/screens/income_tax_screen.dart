@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
-import '../utils/formatters.dart';
 import '../engine/tax_engine.dart';
 import '../widgets/shared_widgets.dart';
 import 'tax_results_screen.dart';
@@ -76,7 +75,7 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
               const Text('Annual Salary (CTC)', style: TextStyle(fontSize: 12, color: AppColors.textLight, fontWeight: FontWeight.w500)),
               const SizedBox(height: 8),
               Row(children: [
-                const Text('₹', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.primary)),
+                const Text('Rs.', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.primary)),
                 const SizedBox(width: 8),
                 Expanded(child: TextField(controller: _salaryCtrl, keyboardType: TextInputType.number,
                     style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: AppColors.text),
@@ -91,10 +90,10 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
           if (_regimeIndex == 1) ...[
             const Text('Deductions (Old Regime)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.text)),
             const SizedBox(height: 12),
-            DeductionInput(controller: _ded80CCtrl, label: 'Section 80C', maxLabel: '₹1.5L'),
-            DeductionInput(controller: _ded80DCtrl, label: 'Section 80D (Health)', maxLabel: '₹75K'),
-            DeductionInput(controller: _dedNPSCtrl, label: 'NPS - 80CCD(1B)', maxLabel: '₹50K'),
-            DeductionInput(controller: _homeLoanCtrl, label: 'Home Loan Interest (24b)', maxLabel: '₹2L'),
+            DeductionInput(controller: _ded80CCtrl, label: 'Section 80C', maxLabel: 'Rs.1.5L'),
+            DeductionInput(controller: _ded80DCtrl, label: 'Section 80D (Health)', maxLabel: 'Rs.75K'),
+            DeductionInput(controller: _dedNPSCtrl, label: 'NPS - 80CCD(1B)', maxLabel: 'Rs.50K'),
+            DeductionInput(controller: _homeLoanCtrl, label: 'Home Loan Interest (24b)', maxLabel: 'Rs.2L'),
             const SizedBox(height: 12),
           ],
           SizedBox(

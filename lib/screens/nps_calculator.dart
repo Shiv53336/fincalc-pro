@@ -77,7 +77,7 @@ class _NpsCalculatorScreenState extends State<NpsCalculatorScreen> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(color: AppColors.accentLight, borderRadius: BorderRadius.circular(10)),
             child: const Text(
-              'ℹ️ NPS offers extra ₹50,000 deduction under 80CCD(1B) beyond 80C limit. '
+              'ℹ️ NPS offers extra Rs.50,000 deduction under 80CCD(1B) beyond 80C limit. '
               'At retirement, min 40% corpus must buy annuity (pension). Remaining 60% is tax-free lump sum. '
               'Pension estimate assumes ~6% annuity rate. Actual returns depend on fund choice (Equity/Corporate/Govt).',
               style: TextStyle(fontSize: 10, color: AppColors.textMed, height: 1.5),

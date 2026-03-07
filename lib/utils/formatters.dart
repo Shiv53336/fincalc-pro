@@ -1,3 +1,5 @@
+/// Rupee symbol constant
+
 /// Formats a number in Indian comma system: 12,50,000
 String formatIndian(double value) {
   if (value < 0) return '-${formatIndian(-value)}';
@@ -14,14 +16,14 @@ String formatIndian(double value) {
   return result;
 }
 
-/// Formats as ₹ with Indian commas
-String formatRupee(double value) => '₹${formatIndian(value)}';
+/// Formats as Rs. with Indian commas (safe for all fonts)
+String formatRupee(double value) => 'Rs.${formatIndian(value)}';
 
 /// Converts to short Indian notation (L, Cr)
 String formatShortIndian(double value) {
   double v = value.abs();
-  if (v >= 10000000) return '₹${(v / 10000000).toStringAsFixed(2)} Cr';
-  if (v >= 100000) return '₹${(v / 100000).toStringAsFixed(2)} L';
-  if (v >= 1000) return '₹${(v / 1000).toStringAsFixed(1)} K';
-  return '₹${v.toStringAsFixed(0)}';
+  if (v >= 10000000) return 'Rs.${(v / 10000000).toStringAsFixed(2)} Cr';
+  if (v >= 100000) return 'Rs.${(v / 100000).toStringAsFixed(2)} L';
+  if (v >= 1000) return 'Rs.${(v / 1000).toStringAsFixed(1)} K';
+  return 'Rs.${v.toStringAsFixed(0)}';
 }

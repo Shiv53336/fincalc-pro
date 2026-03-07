@@ -28,7 +28,7 @@ class _GratuityCalculatorScreenState extends State<GratuityCalculatorScreen> {
   }
 
   // Tax-free limit for gratuity
-  double get _taxFreeLimit => 2000000; // ₹20 lakh limit
+  double get _taxFreeLimit => 2000000; // Rs.20 lakh limit
   double get _taxFreeAmount => min(_gratuity, _taxFreeLimit);
   double get _taxableAmount => max(_gratuity - _taxFreeLimit, 0);
 
@@ -62,7 +62,7 @@ class _GratuityCalculatorScreenState extends State<GratuityCalculatorScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                child: const Text('⚠️ Amount exceeds ₹20L tax-free limit', style: TextStyle(color: Color(0xFFFC8181), fontSize: 11)),
+                child: const Text('⚠️ Amount exceeds Rs.20L tax-free limit', style: TextStyle(color: Color(0xFFFC8181), fontSize: 11)),
               ),
             ],
           ]),
@@ -107,7 +107,7 @@ class _GratuityCalculatorScreenState extends State<GratuityCalculatorScreen> {
               'ℹ️ Gratuity is payable after 5+ years of continuous service. '
               'For employees covered under the Payment of Gratuity Act (10+ employees), '
               'divisor is 26 (working days). Others use 30. '
-              'Tax-free limit: ₹20,00,000. Minimum eligibility: 5 years of service.',
+              'Tax-free limit: Rs.20,00,000. Minimum eligibility: 5 years of service.',
               style: TextStyle(fontSize: 10, color: AppColors.textMed, height: 1.5),
             ),
           ),
