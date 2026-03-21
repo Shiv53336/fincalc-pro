@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/material.dart';
 const _navy = PdfColor.fromInt(0xFF1A365D);
 const _accent = PdfColor.fromInt(0xFF3182CE);
 const _success = PdfColor.fromInt(0xFF38A169);
-const _danger = PdfColor.fromInt(0xFFE53E3E);
 const _textMed = PdfColor.fromInt(0xFF4A5568);
 const _textLight = PdfColor.fromInt(0xFF718096);
 const _bg = PdfColor.fromInt(0xFFF7FAFC);
