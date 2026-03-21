@@ -17,6 +17,14 @@ import 'prepayment_calculator.dart';
 import 'goal_planner.dart';
 import 'health_score.dart';
 import 'compare_screen.dart';
+import 'ssy_calculator.dart';
+import 'inflation_calculator.dart';
+import 'elss_calculator.dart';
+import 'swp_calculator.dart';
+import 'rd_calculator.dart';
+import 'fd_vs_sip.dart';
+import 'cost_of_delay.dart';
+import 'affordability_calculator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -127,6 +135,46 @@ class HomeScreen extends StatelessWidget {
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const EpfCalculatorScreen()))),
             _ListTile(icon: Icons.card_giftcard_rounded, label: 'Gratuity Calculator', desc: 'Service Benefit Estimate', color: AppColors.gold,
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GratuityCalculatorScreen()))),
+          ])),
+        ),
+
+        // Tax-Saving & Govt Schemes
+        _sectionHeader('Tax-Saving & Govt Schemes'),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+          sliver: SliverList(delegate: SliverChildListDelegate([
+            _ListTile(icon: Icons.child_care_rounded, label: 'SSY Calculator', desc: 'Sukanya Samriddhi — EEE Tax-Free', color: AppColors.purple,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SsyCalculatorScreen()))),
+            _ListTile(icon: Icons.lock_clock_rounded, label: 'ELSS Calculator', desc: '3-yr Lock-in · 80C Tax Saving', color: AppColors.success,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ElssCalculatorScreen()))),
+          ])),
+        ),
+
+        // Smart Investment Tools
+        _sectionHeader('Smart Investment Tools'),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+          sliver: SliverList(delegate: SliverChildListDelegate([
+            _ListTile(icon: Icons.compare_rounded, label: 'FD vs SIP', desc: 'See which gives better returns', color: AppColors.accent,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FdVsSipScreen()))),
+            _ListTile(icon: Icons.timer_off_rounded, label: 'Cost of Delay', desc: 'Opportunity cost of delaying SIP', color: AppColors.danger,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CostOfDelayScreen()))),
+            _ListTile(icon: Icons.trending_down_rounded, label: 'SWP Calculator', desc: 'Systematic Withdrawal Planning', color: AppColors.warning,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SwpCalculatorScreen()))),
+            _ListTile(icon: Icons.currency_rupee_rounded, label: 'RD Calculator', desc: 'Recurring Deposit Returns', color: AppColors.gold,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RdCalculatorScreen()))),
+          ])),
+        ),
+
+        // Financial Awareness
+        _sectionHeader('Financial Awareness'),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+          sliver: SliverList(delegate: SliverChildListDelegate([
+            _ListTile(icon: Icons.price_change_rounded, label: 'Inflation Calculator', desc: 'Future cost & purchasing power', color: AppColors.danger,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const InflationCalculatorScreen()))),
+            _ListTile(icon: Icons.account_balance_wallet_rounded, label: 'EMI Affordability', desc: 'How much loan can you afford?', color: AppColors.accent,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AffordabilityCalculatorScreen()))),
           ])),
         ),
 
