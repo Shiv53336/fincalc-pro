@@ -27,7 +27,6 @@ class _SwpCalculatorScreenState extends State<SwpCalculatorScreen> {
     int monthsActual = 0;
     final List<_SwpYearRow> yearTable = [];
 
-    double yearStart = _corpus;
     for (int month = 1; month <= months; month++) {
       if (balance <= 0) break;
       final double interest = balance * r;
@@ -45,7 +44,6 @@ class _SwpCalculatorScreenState extends State<SwpCalculatorScreen> {
           earned: totalEarned,
           balance: max(balance, 0),
         ));
-        yearStart = balance;
       }
 
       if (balance <= 0) break;
