@@ -13,6 +13,10 @@ import 'gratuity_calculator.dart';
 import 'gst_calculator.dart';
 import 'salary_calculator.dart';
 import 'smart_optimizer_screen.dart';
+import 'prepayment_calculator.dart';
+import 'goal_planner.dart';
+import 'health_score.dart';
+import 'compare_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -129,10 +133,30 @@ class HomeScreen extends StatelessWidget {
         // Business & GST
         _sectionHeader('Business & GST'),
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
           sliver: SliverList(delegate: SliverChildListDelegate([
             _ListTile(icon: Icons.receipt_rounded, label: 'GST Calculator', desc: 'CGST / SGST / IGST Breakdown', color: AppColors.danger,
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GstCalculatorScreen()))),
+          ])),
+        ),
+
+        // Planning Tools (Premium)
+        _sectionHeader('✨ Planning Tools'),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+          sliver: SliverList(delegate: SliverChildListDelegate([
+            _ListTile(icon: Icons.currency_rupee_rounded, label: 'Loan Prepayment Simulator', desc: 'See how prepaying saves interest & tenure', color: AppColors.gold,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrepaymentCalculatorScreen())),
+                isPremium: true),
+            _ListTile(icon: Icons.flag_rounded, label: 'Goal-Based Planner', desc: 'Monthly SIP needed for life goals', color: AppColors.accent,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GoalPlannerScreen())),
+                isPremium: true),
+            _ListTile(icon: Icons.favorite_rounded, label: 'Financial Health Score', desc: 'Your financial fitness score 0–100', color: AppColors.success,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FinancialHealthScoreScreen())),
+                isPremium: true),
+            _ListTile(icon: Icons.compare_arrows_rounded, label: 'Save & Compare', desc: 'Compare two saved calculations', color: AppColors.purple,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CompareScenariosScreen())),
+                isPremium: true),
           ])),
         ),
       ],
@@ -194,7 +218,8 @@ class _ListTile extends StatelessWidget {
   final String desc;
   final Color color;
   final VoidCallback onTap;
-  const _ListTile({required this.icon, required this.label, required this.desc, required this.color, required this.onTap});
+  final bool isPremium;
+  const _ListTile({required this.icon, required this.label, required this.desc, required this.color, required this.onTap, this.isPremium = false});
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +234,20 @@ class _ListTile extends StatelessWidget {
               child: Icon(icon, color: color, size: 22)),
           const SizedBox(width: 14),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.text)),
+            Row(children: [
+              Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.text)),
+              if (isPremium) ...[
+                const SizedBox(width: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(colors: [AppColors.gold, Color(0xFFED8936)]),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Text('PRO', style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w800)),
+                ),
+              ],
+            ]),
             Text(desc, style: const TextStyle(fontSize: 12, color: AppColors.textLight)),
           ])),
           const Icon(Icons.chevron_right_rounded, color: AppColors.textLight, size: 20),

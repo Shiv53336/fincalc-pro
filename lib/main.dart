@@ -4,8 +4,11 @@ import 'screens/home_screen.dart';
 import 'screens/income_tax_screen.dart';
 import 'screens/sip_calculator.dart';
 import 'screens/emi_calculator.dart';
+import 'services/premium_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PremiumManager.init();
   runApp(const FinCalcProApp());
 }
 
