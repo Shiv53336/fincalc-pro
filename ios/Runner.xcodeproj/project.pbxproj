@@ -1,0 +1,7 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	objectVersion = 54;
+	classes = {};
+	rootObject = 97C146E61CF9000F007C117D;
+}
