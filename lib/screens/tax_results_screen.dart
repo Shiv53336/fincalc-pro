@@ -3,18 +3,44 @@ import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../engine/tax_engine.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/banner_ad_widget.dart';
 import '../services/tax_pdf.dart';
+import '../services/premium_manager.dart';
+import '../widgets/premium_nudge_sheet.dart';
 import 'smart_optimizer_screen.dart';
 
-class TaxResultsScreen extends StatelessWidget {
+class TaxResultsScreen extends StatefulWidget {
   final TaxResult newResult;
   final TaxResult oldResult;
   const TaxResultsScreen({Key? key, required this.newResult, required this.oldResult}) : super(key: key);
 
   @override
+  State<TaxResultsScreen> createState() => _TaxResultsScreenState();
+}
+
+class _TaxResultsScreenState extends State<TaxResultsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Nudge #1: tax savings found — push Smart Optimizer
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final savings = (widget.newResult.totalTax - widget.oldResult.totalTax).abs();
+      if (!PremiumManager.isPremium && savings > 0) {
+        await PremiumNudgeSheet.showIfEligible(
+          context,
+          nudgeId: 'tax_savings_optimizer',
+          headline: 'Save Even More on Tax!',
+          body: 'You could save ${formatRupee(savings)} by switching regime.\nUnlock Smart Tax Optimizer for a personalised deduction plan.',
+          ctaLabel: 'Unlock Smart Optimizer',
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bool newBetter = newResult.totalTax <= oldResult.totalTax;
-    final double savings = (newResult.totalTax - oldResult.totalTax).abs();
+    final bool newBetter = widget.newResult.totalTax <= widget.oldResult.totalTax;
+    final double savings = (widget.newResult.totalTax - widget.oldResult.totalTax).abs();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Tax Comparison'), actions: [
@@ -51,16 +77,16 @@ class TaxResultsScreen extends StatelessWidget {
           const SizedBox(height: 16),
 
           Row(children: [
-            Expanded(child: _RegimeCard(result: newResult, isRecommended: newBetter)),
+            Expanded(child: _RegimeCard(result: widget.newResult, isRecommended: newBetter)),
             const SizedBox(width: 10),
-            Expanded(child: _RegimeCard(result: oldResult, isRecommended: !newBetter)),
+            Expanded(child: _RegimeCard(result: widget.oldResult, isRecommended: !newBetter)),
           ]),
           const SizedBox(height: 16),
 
           // Smart Optimizer CTA
           GestureDetector(
             onTap: () => Navigator.push(context, MaterialPageRoute(
-                builder: (_) => SmartTaxOptimizerScreen(salary: newResult.grossIncome))),
+                builder: (_) => SmartTaxOptimizerScreen(salary: widget.newResult.grossIncome))),
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -83,7 +109,7 @@ class TaxResultsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Action Buttons - WIRED UP
+          // Action Buttons
           Row(children: [
             Expanded(child: ActionButton(
               icon: Icons.picture_as_pdf_rounded,
@@ -97,6 +123,9 @@ class TaxResultsScreen extends StatelessWidget {
               onTap: () => _exportPdf(context),
             )),
           ]),
+          const SizedBox(height: 16),
+          const BannerAdWidget(),
+          const SizedBox(height: 8),
         ]),
       ),
     );
@@ -105,8 +134,8 @@ class TaxResultsScreen extends StatelessWidget {
   void _exportPdf(BuildContext context) {
     TaxPdfGenerator.generateAndShare(
       context,
-      newResult: newResult,
-      oldResult: oldResult,
+      newResult: widget.newResult,
+      oldResult: widget.oldResult,
     );
   }
 }

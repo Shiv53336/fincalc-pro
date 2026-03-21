@@ -5,6 +5,9 @@ import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/premium_gate.dart';
 import '../services/premium_manager.dart';
+import '../services/nudge_service.dart';
+import '../widgets/premium_nudge_sheet.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class FinancialHealthScoreScreen extends StatefulWidget {
   const FinancialHealthScoreScreen({Key? key}) : super(key: key);
@@ -22,6 +25,23 @@ class _FinancialHealthScoreScreenState extends State<FinancialHealthScoreScreen>
   bool _hasHealth = false;
   bool _hasLife = false;
   bool _has80C = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Nudge #4: score below 70 — offer detailed breakdown
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!PremiumManager.isPremium && _calculate().score < 70) {
+        await PremiumNudgeSheet.showIfEligible(
+          context,
+          nudgeId: 'health_score_low',
+          headline: 'Improve Your Financial Health',
+          body: 'Your score needs work. Unlock a detailed 6-parameter breakdown with personalised improvement tips.',
+          ctaLabel: 'Unlock Detailed Plan',
+        );
+      }
+    });
+  }
 
   _HealthResult _calculate() {
     double score = 0;
@@ -181,6 +201,7 @@ class _FinancialHealthScoreScreenState extends State<FinancialHealthScoreScreen>
             featureName: 'Detailed Health Breakdown',
             child: _DetailedBreakdown(result: result),
           ),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

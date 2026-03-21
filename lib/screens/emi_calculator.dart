@@ -4,6 +4,10 @@ import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
 import '../services/emi_pdf.dart';
+import '../widgets/banner_ad_widget.dart';
+import '../services/premium_manager.dart';
+import '../services/nudge_service.dart';
+import '../widgets/premium_nudge_sheet.dart';
 
 class EmiCalculatorScreen extends StatefulWidget {
   const EmiCalculatorScreen({Key? key}) : super(key: key);
@@ -14,6 +18,23 @@ class EmiCalculatorScreen extends StatefulWidget {
 class _EmiCalculatorScreenState extends State<EmiCalculatorScreen> {
   double _loan = 5000000, _rate = 8.5, _tenure = 20;
   int _type = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Nudge #3: show prepayment nudge when interest is high
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!PremiumManager.isPremium && _interest > 100000) {
+        await PremiumNudgeSheet.showIfEligible(
+          context,
+          nudgeId: 'emi_high_interest',
+          headline: 'Save Lakhs on Interest!',
+          body: 'Prepayment could save you ${formatRupee(_interest * 0.2)}+ in interest.\nUnlock the Loan Prepayment Simulator.',
+          ctaLabel: 'Unlock Prepayment Simulator',
+        );
+      }
+    });
+  }
 
   static const _typeNames = ['Home', 'Car', 'Personal'];
 
@@ -74,6 +95,9 @@ class _EmiCalculatorScreenState extends State<EmiCalculatorScreen> {
         SliderCard(label: 'Loan Tenure', value: _tenure, displayValue: '${_tenure.round()} years',
             min: 1, max: _type == 0 ? 30 : (_type == 1 ? 7 : 5),
             color: AppColors.success, onChanged: (v) => setState(() => _tenure = v.roundToDouble())),
+        const SizedBox(height: 16),
+        const BannerAdWidget(),
+        const SizedBox(height: 8),
       ])),
     );
   }

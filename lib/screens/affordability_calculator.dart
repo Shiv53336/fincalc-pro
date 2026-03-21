@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class AffordabilityCalculatorScreen extends StatefulWidget {
   const AffordabilityCalculatorScreen({Key? key}) : super(key: key);
@@ -161,6 +162,7 @@ class _AffordabilityCalculatorScreenState extends State<AffordabilityCalculatorS
 
           // Tips
           _TipsCard(dti: dti, afterDti: afterDti, safeEmi: safeEmi, salary: _salary),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

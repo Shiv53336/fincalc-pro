@@ -6,6 +6,7 @@ import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/premium_gate.dart';
 import '../services/premium_manager.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class GoalPlannerScreen extends StatefulWidget {
   const GoalPlannerScreen({Key? key}) : super(key: key);
@@ -205,6 +206,7 @@ class _GoalPlannerScreenState extends State<GoalPlannerScreen> {
             featureName: 'Detailed Goal Projection',
             child: _ProjectionTable(result: result),
           ),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

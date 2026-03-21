@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class ElssCalculatorScreen extends StatefulWidget {
   const ElssCalculatorScreen({Key? key}) : super(key: key);
@@ -113,6 +114,7 @@ class _ElssCalculatorScreenState extends State<ElssCalculatorScreen> {
             fdRate: _fdRate,
             returnRate: _returnRate,
           ),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

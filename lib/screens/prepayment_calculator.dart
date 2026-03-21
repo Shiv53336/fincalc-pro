@@ -6,6 +6,7 @@ import '../widgets/shared_widgets.dart';
 import '../widgets/premium_gate.dart';
 import '../services/premium_manager.dart';
 import '../services/prepayment_pdf.dart';
+import '../widgets/banner_ad_widget.dart';
 
 // ─── Public model classes ───────────────────
 class PrepaymentResult {
@@ -204,6 +205,7 @@ class _PrepaymentCalculatorScreenState extends State<PrepaymentCalculatorScreen>
             featureName: 'Full Prepayment Analysis',
             child: _DetailedBreakdown(result: _result),
           ),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

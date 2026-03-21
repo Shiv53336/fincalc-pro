@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class FdVsSipScreen extends StatefulWidget {
   const FdVsSipScreen({Key? key}) : super(key: key);
@@ -129,6 +130,7 @@ class _FdVsSipScreenState extends State<FdVsSipScreen> {
 
           // Year-wise table
           _ComparisonTable(rows: table, crossoverYear: crossoverYear),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

@@ -4,6 +4,7 @@ import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
 import '../services/sip_pdf.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class SipCalculatorScreen extends StatefulWidget {
   const SipCalculatorScreen({Key? key}) : super(key: key);
@@ -74,6 +75,9 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
         const Text('Year-wise Growth', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.text)),
         const SizedBox(height: 10),
         _YearTable(monthly: _monthly, rate: _rate, years: _years.round()),
+        const SizedBox(height: 16),
+        const BannerAdWidget(),
+        const SizedBox(height: 8),
       ])),
     );
   }

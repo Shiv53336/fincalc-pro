@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class RdCalculatorScreen extends StatefulWidget {
   const RdCalculatorScreen({Key? key}) : super(key: key);
@@ -153,6 +154,7 @@ class _RdCalculatorScreenState extends State<RdCalculatorScreen> {
               }),
             ]),
           ),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

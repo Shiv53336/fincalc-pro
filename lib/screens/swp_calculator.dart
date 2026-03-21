@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class SwpCalculatorScreen extends StatefulWidget {
   const SwpCalculatorScreen({Key? key}) : super(key: key);
@@ -122,6 +123,7 @@ class _SwpCalculatorScreenState extends State<SwpCalculatorScreen> {
           const SizedBox(height: 16),
 
           _YearTable(rows: result.yearTable),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

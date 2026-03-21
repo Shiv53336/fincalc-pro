@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'constants/colors.dart';
 import 'screens/home_screen.dart';
 import 'screens/income_tax_screen.dart';
 import 'screens/sip_calculator.dart';
 import 'screens/emi_calculator.dart';
 import 'services/premium_manager.dart';
+import 'services/ad_service.dart';
+import 'services/purchase_service.dart';
+import 'services/analytics_service.dart';
+import 'services/nudge_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Core
   await PremiumManager.init();
+
+  // AdMob
+  await AdService.initialize();
+
+  // IAP
+  await PurchaseService().initialize();
+
+  // Firebase Analytics (graceful — requires google-services.json)
+  try {
+    await Firebase.initializeApp();
+    AnalyticsService.initialize();
+  } catch (_) {
+    // Firebase not configured yet — analytics disabled
+  }
+
+  // Track install date for usage nudge
+  await NudgeService.recordInstallDate();
+
+  // Log app open
+  await AnalyticsService.logAppOpened();
+
   runApp(const FinCalcProApp());
 }
 

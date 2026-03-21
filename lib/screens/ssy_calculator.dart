@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
+import '../widgets/banner_ad_widget.dart';
 
 class SsyCalculatorScreen extends StatefulWidget {
   const SsyCalculatorScreen({Key? key}) : super(key: key);
@@ -123,6 +124,7 @@ class _SsyCalculatorScreenState extends State<SsyCalculatorScreen> {
 
           // Year-wise table
           _YearTable(table: result.table),
+          const BannerAdWidget(),
           const SizedBox(height: 24),
         ]),
       ),

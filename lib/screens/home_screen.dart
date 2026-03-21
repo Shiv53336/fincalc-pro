@@ -25,9 +25,39 @@ import 'rd_calculator.dart';
 import 'fd_vs_sip.dart';
 import 'cost_of_delay.dart';
 import 'affordability_calculator.dart';
+import 'premium_screen.dart';
+import '../widgets/banner_ad_widget.dart';
+import '../services/premium_manager.dart';
+import '../services/nudge_service.dart';
+import '../widgets/premium_nudge_sheet.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Nudge #5: 14+ days of app usage
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!PremiumManager.isPremium) {
+        final days = await NudgeService.daysSinceInstall();
+        if (days >= 14) {
+          await PremiumNudgeSheet.showIfEligible(
+            context,
+            nudgeId: 'long_time_user',
+            headline: 'You\'re a Power User!',
+            body: 'You\'ve been using FinCalc Pro for $days days 🎉\nReward yourself with lifetime Premium — just Rs.99.',
+            ctaLabel: 'Upgrade to Premium',
+          );
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +79,39 @@ class HomeScreen extends StatelessWidget {
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text('Good ${_getGreeting()}', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13)),
                       const SizedBox(height: 2),
-                      const Text('FinCalc Pro', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
+                      Row(children: [
+                        const Text('FinCalc Pro', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
+                        if (PremiumManager.isPremium) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(colors: [AppColors.gold, Color(0xFFED8936)]),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text('PRO', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800)),
+                          ),
+                        ],
+                      ]),
                     ]),
-                    Container(
-                      width: 42, height: 42,
-                      decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(12)),
-                      child: const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 22),
-                    ),
+                    if (!PremiumManager.isPremium)
+                      GestureDetector(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen())),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(colors: [AppColors.gold, Color(0xFFED8936)]),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text('✨ Rs.99', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800)),
+                        ),
+                      )
+                    else
+                      Container(
+                        width: 42, height: 42,
+                        decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(12)),
+                        child: const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 22),
+                      ),
                   ]),
                   const SizedBox(height: 16),
                   // Smart Tax Optimizer CTA
@@ -188,6 +244,14 @@ class HomeScreen extends StatelessWidget {
           ])),
         ),
 
+        // Bottom ad banner
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: const BannerAdWidget(),
+          ),
+        ),
+
         // Planning Tools (Premium)
         _sectionHeader('✨ Planning Tools'),
         SliverPadding(
@@ -211,7 +275,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  static SliverPadding _sectionHeader(String title) {
+  SliverPadding _sectionHeader(String title) {
     return SliverPadding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
       sliver: SliverToBoxAdapter(
@@ -220,7 +284,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  static String _getGreeting() {
+  String _getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'morning';
     if (hour < 17) return 'afternoon';
