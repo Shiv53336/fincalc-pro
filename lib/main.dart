@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'constants/colors.dart';
 import 'screens/home_screen.dart';
 import 'screens/income_tax_screen.dart';
@@ -23,13 +22,8 @@ void main() async {
   // IAP
   await PurchaseService().initialize();
 
-  // Firebase Analytics (graceful — requires google-services.json)
-  try {
-    await Firebase.initializeApp();
-    AnalyticsService.initialize();
-  } catch (_) {
-    // Firebase not configured yet — analytics disabled
-  }
+  // Analytics (stub — no Firebase required)
+  AnalyticsService.initialize();
 
   // Track install date for usage nudge
   await NudgeService.recordInstallDate();

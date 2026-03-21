@@ -71,12 +71,16 @@ class DeductionInput extends StatelessWidget {
 class SliderCard extends StatelessWidget {
   final String label;
   final double value;
-  final String displayValue;
+  final String? displayValue;
+  final String Function(double)? format;
+  final int? divisions;
   final double min;
   final double max;
   final Color color;
   final ValueChanged<double> onChanged;
-  const SliderCard({Key? key, required this.label, required this.value, required this.displayValue, required this.min, required this.max, required this.color, required this.onChanged}) : super(key: key);
+  const SliderCard({Key? key, required this.label, required this.value, this.displayValue, this.format, this.divisions, required this.min, required this.max, required this.color, required this.onChanged}) : super(key: key);
+
+  String get _displayText => displayValue ?? format?.call(value) ?? value.toStringAsFixed(1);
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +94,7 @@ class SliderCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-            child: Text(displayValue, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: color)),
+            child: Text(_displayText, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: color)),
           ),
         ]),
         SliderTheme(
@@ -100,7 +104,7 @@ class SliderCard extends StatelessWidget {
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
             overlayColor: color.withOpacity(0.15),
           ),
-          child: Slider(value: value.clamp(min, max), min: min, max: max, onChanged: onChanged),
+          child: Slider(value: value.clamp(min, max), min: min, max: max, divisions: divisions, onChanged: onChanged),
         ),
       ]),
     );
@@ -147,7 +151,9 @@ class MiniStat extends StatelessWidget {
 class DetailRow extends StatelessWidget {
   final String label;
   final String value;
-  const DetailRow(this.label, this.value, {Key? key}) : super(key: key);
+  final bool isBold;
+  final Color? valueColor;
+  const DetailRow({Key? key, required this.label, required this.value, this.isBold = false, this.valueColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +161,7 @@ class DetailRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Flexible(child: Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textLight), overflow: TextOverflow.ellipsis)),
-        Text(value, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.text)),
+        Text(value, style: TextStyle(fontSize: 10, fontWeight: isBold ? FontWeight.w700 : FontWeight.w600, color: valueColor ?? AppColors.text)),
       ]),
     );
   }

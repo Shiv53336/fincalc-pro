@@ -165,15 +165,15 @@ class _RegimeCard extends StatelessWidget {
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: result.totalTax == 0 ? AppColors.success : AppColors.danger)),
         if (result.totalTax == 0) const Text('Zero Tax!', style: TextStyle(fontSize: 10, color: AppColors.success)),
         const SizedBox(height: 10), const Divider(height: 1), const SizedBox(height: 8),
-        DetailRow('Gross Income', formatRupee(result.grossIncome)),
-        DetailRow('Std Deduction', '- ${formatRupee(result.standardDeduction)}'),
+        DetailRow(label: 'Gross Income', value: formatRupee(result.grossIncome)),
+        DetailRow(label: 'Std Deduction', value: '- ${formatRupee(result.standardDeduction)}'),
         if (result.totalDeductions > result.standardDeduction)
-          DetailRow('Other Ded.', '- ${formatRupee(result.totalDeductions - result.standardDeduction)}'),
-        DetailRow('Taxable', formatRupee(result.taxableIncome)),
-        DetailRow('Tax (slabs)', formatRupee(result.taxBeforeRebate)),
-        if (result.rebate87A > 0) DetailRow('Rebate 87A', '- ${formatRupee(result.rebate87A)}'),
-        if (result.cess > 0) DetailRow('Cess (4%)', formatRupee(result.cess)),
-        if (result.surcharge > 0) DetailRow('Surcharge', formatRupee(result.surcharge)),
+          DetailRow(label: 'Other Ded.', value: '- ${formatRupee(result.totalDeductions - result.standardDeduction)}'),
+        DetailRow(label: 'Taxable', value: formatRupee(result.taxableIncome)),
+        DetailRow(label: 'Tax (slabs)', value: formatRupee(result.taxBeforeRebate)),
+        if (result.rebate87A > 0) DetailRow(label: 'Rebate 87A', value: '- ${formatRupee(result.rebate87A)}'),
+        if (result.cess > 0) DetailRow(label: 'Cess (4%)', value: formatRupee(result.cess)),
+        if (result.surcharge > 0) DetailRow(label: 'Surcharge', value: formatRupee(result.surcharge)),
       ]),
     );
   }

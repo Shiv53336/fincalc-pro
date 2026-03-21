@@ -1,22 +1,12 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 
-/// Wraps Firebase Analytics. Gracefully no-ops if Firebase is not configured.
-/// To activate: add google-services.json and call FirebaseAnalytics.initialize().
+/// Analytics stub — logs to debug console in dev, no-ops in release.
+/// Replace with Firebase Analytics once google-services.json is added.
 class AnalyticsService {
-  static FirebaseAnalytics? _analytics;
-
-  static void initialize() {
-    try {
-      _analytics = FirebaseAnalytics.instance;
-    } catch (_) {
-      // Firebase not configured — analytics disabled
-    }
-  }
+  static void initialize() {}
 
   static Future<void> _log(String name, [Map<String, Object>? params]) async {
-    try {
-      await _analytics?.logEvent(name: name, parameters: params);
-    } catch (_) {}
+    if (kDebugMode) debugPrint('[Analytics] $name ${params ?? ''}');
   }
 
   // ─── App lifecycle ──────────────────────────
