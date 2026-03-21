@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../services/scenario_storage.dart';
 import '../services/premium_manager.dart';
-import '../widgets/banner_ad_widget.dart';
 
 class CompareScenariosScreen extends StatefulWidget {
   const CompareScenariosScreen({Key? key}) : super(key: key);

@@ -28,7 +28,6 @@ class _FdVsSipScreenState extends State<FdVsSipScreen> {
     final double sipMaturity = r == 0
         ? _amount * months
         : _amount * (pow(1 + r, months) - 1) / r * (1 + r);
-    final double sipInvested = _amount * months;
 
     // FD maturity (quarterly compounding on cumulative deposit)
     // For monthly: treat all deposits as lump sum (conservative)

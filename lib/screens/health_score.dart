@@ -1,11 +1,9 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
 import '../widgets/premium_gate.dart';
 import '../services/premium_manager.dart';
-import '../services/nudge_service.dart';
 import '../widgets/premium_nudge_sheet.dart';
 import '../widgets/banner_ad_widget.dart';
 

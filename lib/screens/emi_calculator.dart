@@ -6,7 +6,6 @@ import '../widgets/shared_widgets.dart';
 import '../services/emi_pdf.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../services/premium_manager.dart';
-import '../services/nudge_service.dart';
 import '../widgets/premium_nudge_sheet.dart';
 
 class EmiCalculatorScreen extends StatefulWidget {

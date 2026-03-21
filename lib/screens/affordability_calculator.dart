@@ -42,12 +42,11 @@ class _AffordabilityCalculatorScreenState extends State<AffordabilityCalculatorS
 
     // Affordability rating
     String rating;
-    Color ratingColor;
     String emoji;
-    if (safeEmi > _salary * 0.2) { rating = 'Comfortable'; ratingColor = AppColors.success; emoji = '✅'; }
-    else if (safeEmi > _salary * 0.1) { rating = 'Moderate'; ratingColor = AppColors.warning; emoji = '⚠️'; }
-    else if (safeEmi > 0) { rating = 'Stretched'; ratingColor = AppColors.danger; emoji = '🔴'; }
-    else { rating = 'Not Advisable'; ratingColor = AppColors.danger; emoji = '❌'; }
+    if (safeEmi > _salary * 0.2) { rating = 'Comfortable'; emoji = '✅'; }
+    else if (safeEmi > _salary * 0.1) { rating = 'Moderate'; emoji = '⚠️'; }
+    else if (safeEmi > 0) { rating = 'Stretched'; emoji = '🔴'; }
+    else { rating = 'Not Advisable'; emoji = '❌'; }
 
     return Scaffold(
       appBar: AppBar(title: const Text('EMI Affordability')),
