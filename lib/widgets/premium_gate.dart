@@ -141,11 +141,17 @@ class _PremiumGateState extends State<PremiumGate> {
           TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Later')),
           ElevatedButton(
             onPressed: _loading ? null : () => _buy(dialogContext),
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.gold),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.gold,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+            ),
             child: _loading
                 ? const SizedBox(width: 20, height: 20,
                     child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                : const Text('Buy Rs.99'),
+                : const Text('Buy — Rs.99'),
           ),
         ],
       ),

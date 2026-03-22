@@ -60,12 +60,24 @@ class PurchaseService {
   /// Initiates the Rs.99 premium purchase.
   Future<void> buyPremium(BuildContext context) async {
     if (!_available) {
-      _showError(context, 'Store not available. Please try again later.');
+      _showError(context, 'Google Play not available. Please check your connection and try again.');
       return;
     }
-    final product = await fetchProductDetails();
+
+    // Retry product fetch up to 2 times to handle transient Play Store delays
+    ProductDetails? product;
+    for (int attempt = 0; attempt < 3; attempt++) {
+      product = await fetchProductDetails();
+      if (product != null) break;
+      if (attempt < 2) await Future.delayed(const Duration(seconds: 2));
+    }
+
     if (product == null) {
-      _showError(context, 'Product not found. Please try again later.');
+      _showError(
+        context,
+        'Could not load the product from Google Play. '
+        'Make sure you\'re signed into a test account and the app is installed via Play Store.',
+      );
       return;
     }
     final param = PurchaseParam(productDetails: product);
