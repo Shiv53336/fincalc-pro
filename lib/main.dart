@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'constants/colors.dart';
 import 'screens/home_screen.dart';
+import 'screens/welcome_screen.dart';
 import 'screens/income_tax_screen.dart';
 import 'screens/sip_calculator.dart';
 import 'screens/emi_calculator.dart';
@@ -31,11 +33,16 @@ void main() async {
   // Log app open
   await AnalyticsService.logAppOpened();
 
-  runApp(const FinCalcProApp());
+  // First-launch detection
+  final prefs = await SharedPreferences.getInstance();
+  final bool onboardingDone = prefs.getBool('onboarding_complete') ?? false;
+
+  runApp(FinCalcProApp(onboardingComplete: onboardingDone));
 }
 
 class FinCalcProApp extends StatelessWidget {
-  const FinCalcProApp({Key? key}) : super(key: key);
+  final bool onboardingComplete;
+  const FinCalcProApp({Key? key, required this.onboardingComplete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +70,7 @@ class FinCalcProApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MainNavigationScreen(),
+      home: onboardingComplete ? const MainNavigationScreen() : const WelcomeScreen(),
     );
   }
 }

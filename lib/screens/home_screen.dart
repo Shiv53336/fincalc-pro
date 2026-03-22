@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/colors.dart';
 import 'income_tax_screen.dart';
 import 'sip_calculator.dart';
@@ -39,9 +40,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String _userName = '';
+
   @override
   void initState() {
     super.initState();
+    _loadUserName();
     // Nudge #5: 14+ days of app usage
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!PremiumManager.isPremium) {
@@ -57,6 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     });
+  }
+
+  Future<void> _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final name = prefs.getString('user_name') ?? '';
+    if (mounted && name.isNotEmpty) setState(() => _userName = name);
   }
 
   @override
@@ -77,7 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text('Good ${_getGreeting()}', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13)),
+                      Text(
+                        _userName.isNotEmpty ? 'Good ${_getGreeting()}, $_userName!' : 'Good ${_getGreeting()}',
+                        style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13),
+                      ),
                       const SizedBox(height: 2),
                       Row(children: [
                         const Text('FinCalc Pro', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),

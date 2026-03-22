@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../services/premium_manager.dart';
+import '../services/purchase_service.dart';
 
-class PremiumGate extends StatelessWidget {
+class PremiumGate extends StatefulWidget {
   final Widget child;
   final String featureName;
   final bool showPreview;
@@ -15,13 +16,27 @@ class PremiumGate extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PremiumGate> createState() => _PremiumGateState();
+}
+
+class _PremiumGateState extends State<PremiumGate> {
+  bool _loading = false;
+
+  Future<void> _buy(BuildContext ctx) async {
+    Navigator.pop(ctx);
+    setState(() => _loading = true);
+    await PurchaseService().buyPremium(ctx);
+    if (mounted) setState(() => _loading = false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (PremiumManager.isPremium) return child;
+    if (PremiumManager.isPremium) return widget.child;
 
     return Stack(
       children: [
-        if (showPreview)
-          Opacity(opacity: 0.25, child: IgnorePointer(child: child)),
+        if (widget.showPreview)
+          Opacity(opacity: 0.25, child: IgnorePointer(child: widget.child)),
         Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
@@ -62,7 +77,7 @@ class PremiumGate extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  featureName,
+                  widget.featureName,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -76,7 +91,7 @@ class PremiumGate extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
-                  onPressed: () => _showPremiumDialog(context),
+                  onPressed: _loading ? null : () => _showPremiumDialog(context),
                   icon: const Text('✨', style: TextStyle(fontSize: 16)),
                   label: const Text('Unlock Premium — Rs.99'),
                   style: ElevatedButton.styleFrom(
@@ -106,7 +121,7 @@ class PremiumGate extends StatelessWidget {
   void _showPremiumDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Row(children: [
           Text('✨ ', style: TextStyle(fontSize: 22)),
@@ -123,14 +138,14 @@ class PremiumGate extends StatelessWidget {
           _BulletItem('No ads'),
         ]),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Later')),
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Later')),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // IAP will be wired in Sprint 3
-            },
+            onPressed: _loading ? null : () => _buy(dialogContext),
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.gold),
-            child: const Text('Buy Rs.99'),
+            child: _loading
+                ? const SizedBox(width: 20, height: 20,
+                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                : const Text('Buy Rs.99'),
           ),
         ],
       ),
