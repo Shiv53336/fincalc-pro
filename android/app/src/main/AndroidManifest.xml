@@ -28,10 +28,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2"/>
-        <!-- AdMob App ID (replace with real ID from AdMob console) -->
+        <!-- AdMob App ID -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-6717135600615771~6932935620"/>
     </application>
     <queries>
         <intent>

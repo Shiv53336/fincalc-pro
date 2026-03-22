@@ -4,15 +4,10 @@ import 'premium_manager.dart';
 class AdService {
   static bool _initialized = false;
 
-  // Test IDs — replace with real IDs from AdMob console before release
-  static const String _androidTestBannerAdUnitId =
-      'ca-app-pub-3940256099942544/6300978111';
+  static const String _androidBannerAdUnitId =
+      'ca-app-pub-6717135600615771/3804209403';
 
-  // Production IDs (set these from AdMob console)
-  // static const String _androidProdBannerAdUnitId =
-  //     'ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX';
-
-  static String get bannerAdUnitId => _androidTestBannerAdUnitId;
+  static String get bannerAdUnitId => _androidBannerAdUnitId;
 
   static Future<void> initialize() async {
     if (_initialized) return;
