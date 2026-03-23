@@ -43,13 +43,27 @@ jobs:
       - name: Run tests
         run: flutter test
 
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
       - name: Build APK (debug)
         run: flutter build apk --debug --verbose
 
       - name: Build APK (release)
-        run: flutter build apk --release --no-shrink
+        env:
+          KEYSTORE_PATH: keystore.jks
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+        run: flutter build apk --release
 
       - name: Build AAB (release)
+        env:
+          KEYSTORE_PATH: keystore.jks
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
         run: flutter build appbundle --release
 
       - name: Upload Debug APK
