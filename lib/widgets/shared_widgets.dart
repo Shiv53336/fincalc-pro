@@ -67,8 +67,9 @@ class DeductionInput extends StatelessWidget {
   }
 }
 
-/// Slider card with label, value badge, and themed slider
-class SliderCard extends StatelessWidget {
+/// Slider card with label, value badge, and themed slider.
+/// Tap the value badge to type an exact value.
+class SliderCard extends StatefulWidget {
   final String label;
   final double value;
   final String? displayValue;
@@ -80,7 +81,42 @@ class SliderCard extends StatelessWidget {
   final ValueChanged<double> onChanged;
   const SliderCard({Key? key, required this.label, required this.value, this.displayValue, this.format, this.divisions, required this.min, required this.max, required this.color, required this.onChanged}) : super(key: key);
 
-  String get _displayText => displayValue ?? format?.call(value) ?? value.toStringAsFixed(1);
+  @override
+  State<SliderCard> createState() => _SliderCardState();
+}
+
+class _SliderCardState extends State<SliderCard> {
+  String get _displayText => widget.displayValue ?? widget.format?.call(widget.value) ?? widget.value.toStringAsFixed(1);
+
+  void _showEditDialog(BuildContext context) {
+    final ctrl = TextEditingController(text: widget.value.toStringAsFixed(widget.value == widget.value.roundToDouble() ? 0 : 1));
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(widget.label, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+        content: TextField(
+          controller: ctrl,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: 'Enter value (${widget.min.toStringAsFixed(0)} – ${widget.max.toStringAsFixed(0)})',
+            border: const OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () {
+              final v = double.tryParse(ctrl.text.replaceAll(',', ''));
+              if (v != null) widget.onChanged(v.clamp(widget.min, widget.max));
+              Navigator.pop(ctx);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,21 +126,28 @@ class SliderCard extends StatelessWidget {
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14), border: Border.all(color: AppColors.borderLight)),
       child: Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.textMed)),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-            child: Text(_displayText, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: color)),
+          Text(widget.label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.textMed)),
+          GestureDetector(
+            onTap: () => _showEditDialog(context),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(color: widget.color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: Row(mainAxisSize: MainAxisSize.min, children: [
+                Text(_displayText, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: widget.color)),
+                const SizedBox(width: 4),
+                Icon(Icons.edit, size: 11, color: widget.color.withOpacity(0.6)),
+              ]),
+            ),
           ),
         ]),
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
-            activeTrackColor: color, inactiveTrackColor: AppColors.borderLight,
-            thumbColor: color, trackHeight: 4,
+            activeTrackColor: widget.color, inactiveTrackColor: AppColors.borderLight,
+            thumbColor: widget.color, trackHeight: 4,
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
-            overlayColor: color.withOpacity(0.15),
+            overlayColor: widget.color.withOpacity(0.15),
           ),
-          child: Slider(value: value.clamp(min, max), min: min, max: max, divisions: divisions, onChanged: onChanged),
+          child: Slider(value: widget.value.clamp(widget.min, widget.max), min: widget.min, max: widget.max, divisions: widget.divisions, onChanged: widget.onChanged),
         ),
       ]),
     );

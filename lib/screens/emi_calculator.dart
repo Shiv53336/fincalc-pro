@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
@@ -82,12 +83,12 @@ class _EmiCalculatorScreenState extends State<EmiCalculatorScreen> {
         Row(children: [
           Expanded(child: ActionButton(icon: Icons.picture_as_pdf_rounded, label: 'Save PDF', onTap: _exportPdf)),
           const SizedBox(width: 10),
-          Expanded(child: ActionButton(icon: Icons.share_rounded, label: 'Share', onTap: _exportPdf)),
+          Expanded(child: ActionButton(icon: Icons.share_rounded, label: 'Share', onTap: _shareResults)),
         ]),
         const SizedBox(height: 16),
 
         SliderCard(label: 'Loan Amount', value: _loan, displayValue: formatRupee(_loan),
-            min: 100000, max: _type == 0 ? 50000000 : (_type == 1 ? 5000000 : 2000000),
+            min: 100000, max: _type == 0 ? 50000000 : (_type == 1 ? 15000000 : 4000000),
             color: AppColors.accent, onChanged: (v) => setState(() => _loan = (v / 10000).round() * 10000)),
         SliderCard(label: 'Interest Rate (p.a.)', value: _rate, displayValue: '${_rate.toStringAsFixed(1)}%',
             min: 1, max: 30, color: AppColors.warning, onChanged: (v) => setState(() => _rate = (v * 10).round() / 10)),
@@ -104,6 +105,19 @@ class _EmiCalculatorScreenState extends State<EmiCalculatorScreen> {
   void _exportPdf() {
     EmiPdfGenerator.generateAndShare(context,
         loanAmount: _loan, rate: _rate, tenure: _tenure, loanType: _typeNames[_type]);
+  }
+
+  void _shareResults() {
+    Share.share(
+      '🏠 ${_typeNames[_type]} Loan EMI Calculator\n\n'
+      '💰 Loan Amount: ${formatRupee(_loan)}\n'
+      '📈 Interest Rate: ${_rate.toStringAsFixed(1)}% p.a.\n'
+      '📅 Tenure: ${_tenure.round()} years\n\n'
+      '📊 Monthly EMI: ${formatRupee(_emi)}\n'
+      '💸 Total Interest: ${formatRupee(_interest)}\n'
+      '🧾 Total Payment: ${formatRupee(_total)}\n\n'
+      'Calculated with FinCalc Pro',
+    );
   }
 
   Widget _tab(String label, int i) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../engine/tax_engine.dart';
@@ -120,7 +121,7 @@ class _TaxResultsScreenState extends State<TaxResultsScreen> {
             Expanded(child: ActionButton(
               icon: Icons.share_rounded,
               label: 'Share',
-              onTap: () => _exportPdf(context),
+              onTap: () => _shareResults(),
             )),
           ]),
           const SizedBox(height: 16),
@@ -137,6 +138,19 @@ class _TaxResultsScreenState extends State<TaxResultsScreen> {
       newResult: widget.newResult,
       oldResult: widget.oldResult,
     );
+  }
+
+  void _shareResults() {
+    final bool newBetter = widget.newResult.totalTax <= widget.oldResult.totalTax;
+    final double savings = (widget.newResult.totalTax - widget.oldResult.totalTax).abs();
+    final String text =
+        '📊 My Tax Comparison (FY 2025-26)\n\n'
+        '✅ Recommended: ${newBetter ? "New" : "Old"} Regime — saves ${formatRupee(savings)}\n\n'
+        '🆕 New Regime Tax: ${formatRupee(widget.newResult.totalTax)}\n'
+        '🏛 Old Regime Tax: ${formatRupee(widget.oldResult.totalTax)}\n'
+        '💰 Gross Income: ${formatRupee(widget.newResult.grossIncome)}\n\n'
+        'Calculated with FinCalc Pro';
+    Share.share(text);
   }
 }
 

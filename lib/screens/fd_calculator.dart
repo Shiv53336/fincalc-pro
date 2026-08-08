@@ -35,7 +35,7 @@ class _FdCalculatorScreenState extends State<FdCalculatorScreen> {
         SliderCard(label: 'Deposit Amount', value: _principal, displayValue: formatRupee(_principal),
             min: 10000, max: 10000000, color: AppColors.accent, onChanged: (v) => setState(() => _principal = (v / 1000).round() * 1000)),
         SliderCard(label: 'Interest Rate (p.a.)', value: _rate, displayValue: '${_rate.toStringAsFixed(1)}%',
-            min: 1, max: 15, color: AppColors.warning, onChanged: (v) => setState(() => _rate = (v * 10).round() / 10)),
+            min: 4, max: 15, color: AppColors.warning, onChanged: (v) => setState(() => _rate = (v * 10).round() / 10)),
         SliderCard(label: 'Period', value: _years, displayValue: '${_years.round()} years',
             min: 1, max: 10, color: AppColors.success, onChanged: (v) => setState(() => _years = v.roundToDouble())),
       ])),

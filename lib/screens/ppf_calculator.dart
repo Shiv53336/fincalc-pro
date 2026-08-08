@@ -115,11 +115,11 @@ class _PpfCalculatorScreenState extends State<PpfCalculatorScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(color: AppColors.accentLight, borderRadius: BorderRadius.circular(10)),
-            child: const Text(
+            child: Text(
               'ℹ️ PPF has a 15-year lock-in period (extendable in 5-year blocks). '
-              'Current rate: 7.1% p.a. (set by government quarterly). '
+              'Rate shown (${_rate.toStringAsFixed(1)}% p.a.) is set by the government quarterly — adjust the slider to model rate changes. '
               'Max investment: Rs.1,50,000/year. Interest and maturity are fully tax-free.',
-              style: TextStyle(fontSize: 10, color: AppColors.textMed, height: 1.5),
+              style: const TextStyle(fontSize: 10, color: AppColors.textMed, height: 1.5),
             ),
           ),
         ]),

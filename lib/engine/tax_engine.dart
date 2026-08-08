@@ -66,10 +66,12 @@ class TaxEngine {
     return tax;
   }
 
-  static double _calculateSurcharge(double tax, double taxableIncome) {
+  static double _calculateSurcharge(double tax, double taxableIncome, {bool isNewRegime = false}) {
     if (taxableIncome <= 5000000) return 0;
     if (taxableIncome <= 10000000) return tax * 0.10;
     if (taxableIncome <= 20000000) return tax * 0.15;
+    // New Regime: surcharge capped at 25% (since FY 2023-24)
+    if (isNewRegime) return tax * 0.25;
     if (taxableIncome <= 50000000) return tax * 0.25;
     return tax * 0.37;
   }
@@ -92,7 +94,7 @@ class TaxEngine {
     }
 
     double taxAfterRebate = max(taxBeforeRebate - rebate, 0);
-    double surcharge = _calculateSurcharge(taxAfterRebate, taxableIncome);
+    double surcharge = _calculateSurcharge(taxAfterRebate, taxableIncome, isNewRegime: true);
     double cess = (taxAfterRebate + surcharge) * 0.04;
     double totalTax = taxAfterRebate + surcharge + cess;
 
@@ -120,6 +122,9 @@ class TaxEngine {
     double deductionNPS = 0,
     double homeLoanInterest = 0,
     double hraExemption = 0,
+    double deduction80G = 0,
+    double deduction80E = 0,
+    double deduction80TTA = 0,
   }) {
     double grossIncome = grossSalary + otherIncome;
     double stdDeduction = 50000;
@@ -128,9 +133,14 @@ class TaxEngine {
     double ded80D = min(deduction80D, 75000);
     double dedNPS = min(deductionNPS, 50000);
     double dedHomeLoan = min(homeLoanInterest, 200000);
+    double ded80TTA = min(deduction80TTA, 10000);
+    // 80G and 80E have no fixed upper cap — user enters eligible amount directly
+    double ded80G = deduction80G;
+    double ded80E = deduction80E;
 
     double totalDeductions =
-        stdDeduction + ded80C + ded80D + dedNPS + dedHomeLoan + hraExemption;
+        stdDeduction + ded80C + ded80D + dedNPS + dedHomeLoan + hraExemption +
+        ded80G + ded80E + ded80TTA;
     double taxableIncome = max(grossIncome - totalDeductions, 0);
 
     double taxBeforeRebate = _calculateSlabTax(taxableIncome, oldRegimeSlabs);

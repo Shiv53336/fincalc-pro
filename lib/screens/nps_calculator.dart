@@ -56,7 +56,7 @@ class _NpsCalculatorScreenState extends State<NpsCalculatorScreen> {
 
           // Sliders
           SliderCard(label: 'Monthly Contribution', value: _monthly, displayValue: formatRupee(_monthly),
-              min: 500, max: 50000, color: AppColors.accent,
+              min: 500, max: 200000, color: AppColors.accent,
               onChanged: (v) => setState(() => _monthly = (v / 500).round() * 500)),
           SliderCard(label: 'Expected Returns (p.a.)', value: _rate, displayValue: '${_rate.toStringAsFixed(1)}%',
               min: 5, max: 15, color: AppColors.success,

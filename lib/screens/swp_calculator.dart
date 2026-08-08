@@ -38,9 +38,12 @@ class _SwpCalculatorScreenState extends State<SwpCalculatorScreen> {
       monthsActual = month;
 
       if (month % 12 == 0 || month == months || balance <= 0) {
+        // For the final partial year, only count actual months of withdrawal
+        final int monthInYear = month % 12 == 0 ? 12 : month % 12;
+        final bool isPartialYear = balance <= 0 && month % 12 != 0;
         yearTable.add(_SwpYearRow(
           year: (month / 12).ceil(),
-          withdrawn: _monthlyWithdrawal * 12,
+          withdrawn: isPartialYear ? _monthlyWithdrawal * monthInYear : _monthlyWithdrawal * 12,
           earned: totalEarned,
           balance: max(balance, 0),
         ));

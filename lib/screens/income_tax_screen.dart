@@ -17,7 +17,10 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
   final _ded80DCtrl = TextEditingController();
   final _dedNPSCtrl = TextEditingController();
   final _homeLoanCtrl = TextEditingController();
-  String _selectedFY = 'FY 2025-26';
+  final _hraCtrl = TextEditingController();
+  final _ded80GCtrl = TextEditingController();
+  final _ded80ECtrl = TextEditingController();
+  final _ded80TTACtrl = TextEditingController();
   int _regimeIndex = 0;
 
   @override
@@ -25,6 +28,8 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
     _salaryCtrl.dispose(); _otherIncomeCtrl.dispose();
     _ded80CCtrl.dispose(); _ded80DCtrl.dispose();
     _dedNPSCtrl.dispose(); _homeLoanCtrl.dispose();
+    _hraCtrl.dispose(); _ded80GCtrl.dispose();
+    _ded80ECtrl.dispose(); _ded80TTACtrl.dispose();
     super.dispose();
   }
 
@@ -46,6 +51,10 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
       grossSalary: salary, otherIncome: other,
       deduction80C: _parse(_ded80CCtrl), deduction80D: _parse(_ded80DCtrl),
       deductionNPS: _parse(_dedNPSCtrl), homeLoanInterest: _parse(_homeLoanCtrl),
+      hraExemption: _parse(_hraCtrl),
+      deduction80G: _parse(_ded80GCtrl),
+      deduction80E: _parse(_ded80ECtrl),
+      deduction80TTA: _parse(_ded80TTACtrl),
     );
     Navigator.push(context, MaterialPageRoute(builder: (_) => TaxResultsScreen(newResult: newR, oldResult: oldR)));
   }
@@ -59,9 +68,18 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           // FY Selector
           Row(children: [
-            _buildChip('FY 2025-26', _selectedFY == 'FY 2025-26', () => setState(() => _selectedFY = 'FY 2025-26')),
+            _buildChip('FY 2025-26', true, null),
             const SizedBox(width: 8),
-            _buildChip('FY 2026-27', _selectedFY == 'FY 2026-27', () => setState(() => _selectedFY = 'FY 2026-27')),
+            Expanded(child: Tooltip(
+              message: 'Coming soon',
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(color: AppColors.bg, borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: AppColors.borderLight)),
+                alignment: Alignment.center,
+                child: const Text('FY 2026-27', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textLight)),
+              ),
+            )),
           ]),
           const SizedBox(height: 16),
           SegmentedTab(labels: const ['New Regime', 'Old Regime'], selectedIndex: _regimeIndex,
@@ -72,7 +90,7 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppColors.border)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('Annual Salary (CTC)', style: TextStyle(fontSize: 12, color: AppColors.textLight, fontWeight: FontWeight.w500)),
+              const Text('Gross Taxable Salary', style: TextStyle(fontSize: 12, color: AppColors.textLight, fontWeight: FontWeight.w500)),
               const SizedBox(height: 8),
               Row(children: [
                 const Text('Rs.', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.primary)),
@@ -91,9 +109,13 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
             const Text('Deductions (Old Regime)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.text)),
             const SizedBox(height: 12),
             DeductionInput(controller: _ded80CCtrl, label: 'Section 80C', maxLabel: 'Rs.1.5L'),
-            DeductionInput(controller: _ded80DCtrl, label: 'Section 80D (Health)', maxLabel: 'Rs.75K'),
+            DeductionInput(controller: _ded80DCtrl, label: 'Section 80D (Health Ins.)', maxLabel: 'Rs.75K'),
             DeductionInput(controller: _dedNPSCtrl, label: 'NPS - 80CCD(1B)', maxLabel: 'Rs.50K'),
             DeductionInput(controller: _homeLoanCtrl, label: 'Home Loan Interest (24b)', maxLabel: 'Rs.2L'),
+            DeductionInput(controller: _hraCtrl, label: 'HRA Exemption', maxLabel: 'Actuals'),
+            DeductionInput(controller: _ded80GCtrl, label: 'Section 80G (Donations)', maxLabel: 'No limit'),
+            DeductionInput(controller: _ded80ECtrl, label: 'Section 80E (Edu. Loan Interest)', maxLabel: 'No limit'),
+            DeductionInput(controller: _ded80TTACtrl, label: 'Section 80TTA (Savings Interest)', maxLabel: 'Rs.10K'),
             const SizedBox(height: 12),
           ],
           SizedBox(
@@ -115,7 +137,7 @@ class _IncomeTaxInputScreenState extends State<IncomeTaxInputScreen> {
     );
   }
 
-  Widget _buildChip(String text, bool selected, VoidCallback onTap) {
+  Widget _buildChip(String text, bool selected, VoidCallback? onTap) {
     return Expanded(child: GestureDetector(onTap: onTap, child: Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(color: selected ? AppColors.accent : Colors.white, borderRadius: BorderRadius.circular(10),

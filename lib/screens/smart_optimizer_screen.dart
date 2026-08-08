@@ -82,6 +82,8 @@ class _SmartTaxOptimizerScreenState extends State<SmartTaxOptimizerScreen> {
             const SizedBox(height: 12),
             ..._getRecs().map((r) => _RecCard(rec: r)),
             const SizedBox(height: 12),
+            _RegimeComparisonTile(salary: _salary),
+            const SizedBox(height: 12),
             Container(padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(color: AppColors.borderLight, borderRadius: BorderRadius.circular(10)),
                 child: const Text('⚠️ These are estimates based on Old Regime with maximum deductions. Actual savings depend on your tax slab. Consult a tax professional.',
@@ -91,6 +93,56 @@ class _SmartTaxOptimizerScreenState extends State<SmartTaxOptimizerScreen> {
                 child: Text('Enter your salary above to get recommendations', style: TextStyle(color: AppColors.textLight)))),
         ]),
       ),
+    );
+  }
+}
+
+class _RegimeComparisonTile extends StatelessWidget {
+  final double salary;
+  const _RegimeComparisonTile({required this.salary});
+
+  @override
+  Widget build(BuildContext context) {
+    final TaxResult newR = TaxEngine.calculateNewRegime(grossSalary: salary);
+    final TaxResult oldROptimized = TaxEngine.calculateOldRegime(
+      grossSalary: salary,
+      deduction80C: 150000,
+      deduction80D: 75000,
+      deductionNPS: 50000,
+      homeLoanInterest: 200000,
+    );
+    final bool oldWins = oldROptimized.totalTax < newR.totalTax;
+    final double diff = (newR.totalTax - oldROptimized.totalTax).abs();
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: oldWins ? AppColors.successLight : AppColors.accentLight,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: oldWins ? AppColors.success : AppColors.accent),
+      ),
+      child: Row(children: [
+        Text(oldWins ? '🏆' : '💡', style: const TextStyle(fontSize: 24)),
+        const SizedBox(width: 12),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            oldWins
+                ? 'Optimized Old Regime wins by ${formatRupee(diff)}'
+                : 'New Regime still better by ${formatRupee(diff)}',
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: oldWins ? AppColors.success : AppColors.accent),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            oldWins
+                ? 'With all deductions above, Old Regime saves you more.'
+                : 'Even after all deductions, New Regime has lower tax.',
+            style: const TextStyle(fontSize: 11, color: AppColors.textMed),
+          ),
+          const SizedBox(height: 4),
+          Text('New Regime: ${formatRupee(newR.totalTax)} | Optimized Old: ${formatRupee(oldROptimized.totalTax)}',
+              style: const TextStyle(fontSize: 10, color: AppColors.textLight)),
+        ])),
+      ]),
     );
   }
 }

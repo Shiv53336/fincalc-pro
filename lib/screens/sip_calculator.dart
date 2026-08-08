@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
@@ -55,9 +56,9 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
         ]),
         const SizedBox(height: 20),
         SliderCard(label: 'Monthly SIP Amount', value: _monthly, displayValue: formatRupee(_monthly),
-            min: 500, max: 100000, color: AppColors.accent, onChanged: (v) => setState(() => _monthly = v.roundToDouble())),
+            min: 500, max: 500000, color: AppColors.accent, onChanged: (v) => setState(() => _monthly = v.roundToDouble())),
         SliderCard(label: 'Expected Returns (p.a.)', value: _rate, displayValue: '${_rate.toStringAsFixed(1)}%',
-            min: 1, max: 30, color: AppColors.success, onChanged: (v) => setState(() => _rate = v)),
+            min: 4, max: 30, color: AppColors.success, onChanged: (v) => setState(() => _rate = v)),
         SliderCard(label: 'Time Period', value: _years, displayValue: '${_years.round()} years',
             min: 1, max: 40, color: AppColors.warning, onChanged: (v) => setState(() => _years = v.roundToDouble())),
         const SizedBox(height: 12),
@@ -68,7 +69,16 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
               onTap: () => SipPdfGenerator.generateAndShare(context, monthly: _monthly, rate: _rate, years: _years))),
           const SizedBox(width: 10),
           Expanded(child: ActionButton(icon: Icons.share_rounded, label: 'Share',
-              onTap: () => SipPdfGenerator.generateAndShare(context, monthly: _monthly, rate: _rate, years: _years))),
+              onTap: () => Share.share(
+                '📈 SIP Calculator Results\n\n'
+                '💵 Monthly SIP: ${formatRupee(_monthly)}\n'
+                '📊 Expected Returns: ${_rate.toStringAsFixed(1)}% p.a.\n'
+                '📅 Period: ${_years.round()} years\n\n'
+                '💰 Total Invested: ${formatRupee(_totalInv)}\n'
+                '🏆 Total Value: ${formatRupee(_fv)}\n'
+                '✨ Returns: ${formatRupee(_ret)}\n\n'
+                'Calculated with FinCalc Pro',
+              ))),
         ]),
         const SizedBox(height: 16),
 

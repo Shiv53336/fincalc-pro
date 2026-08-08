@@ -18,10 +18,10 @@ class GoalPlannerScreen extends StatefulWidget {
 class _GoalPlannerScreenState extends State<GoalPlannerScreen> {
   // Goal type
   final List<Map<String, dynamic>> _goalTypes = [
-    {'label': 'House', 'icon': '🏠', 'default': 5000000},
+    {'label': 'House', 'icon': '🏠', 'default': 10000000},
     {'label': 'Car', 'icon': '🚗', 'default': 1500000},
     {'label': 'Child Education', 'icon': '🎓', 'default': 3000000},
-    {'label': 'Retirement', 'icon': '🏖', 'default': 10000000},
+    {'label': 'Retirement', 'icon': '🏖', 'default': 30000000},
     {'label': 'Wedding', 'icon': '💒', 'default': 2000000},
     {'label': 'Emergency Fund', 'icon': '🛡', 'default': 600000},
     {'label': 'Custom', 'icon': '⭐', 'default': 1000000},
@@ -100,12 +100,14 @@ class _GoalPlannerScreenState extends State<GoalPlannerScreen> {
     // Lump sum needed today
     final double lumpSum = _targetAmount / pow(1 + r, years);
 
-    // Year-wise projection
+    // Year-wise projection using correct monthly SIP compounding
     final List<_YearRow> projection = [];
-    double corpus = 0;
     for (int y = 1; y <= years; y++) {
-      corpus = sip * 12 * ((pow(1 + r, y) - 1) / r);
-      projection.add(_YearRow(y, sip * 12 * y, corpus));
+      final int m = y * 12;
+      final double corpus = rm == 0
+          ? sip * m
+          : sip * (pow(1 + rm, m) - 1) / rm * (1 + rm);
+      projection.add(_YearRow(y, sip * m, corpus));
     }
 
     return _GoalResult(

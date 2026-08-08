@@ -39,8 +39,14 @@ class _ElssCalculatorScreenState extends State<ElssCalculatorScreen> {
     final double eligible80C = yearlyInvested.clamp(0, _limit80C);
     final double taxSaved = eligible80C * _taxRate;
 
-    // FD comparison (quarterly compounding on same invested amount)
-    final double fdMaturity = invested * pow(1 + _fdRate / 100 / 4, 4 * years);
+    // FD comparison: compound each monthly SIP contribution individually
+    // (same approach as ELSS SIP formula above — avoids lump-sum overstatement)
+    double fdMaturity = 0;
+    final double fdR = _fdRate / 100 / 4; // quarterly rate
+    for (int m = 1; m <= months; m++) {
+      final double quartersRemaining = (months - m) / 3.0;
+      fdMaturity += _monthly * pow(1 + fdR, quartersRemaining);
+    }
     final double elssAdvantage = maturity - fdMaturity;
 
     return Scaffold(

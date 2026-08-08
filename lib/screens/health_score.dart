@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../constants/colors.dart';
 import '../utils/formatters.dart';
 import '../widgets/shared_widgets.dart';
@@ -207,12 +208,10 @@ class _FinancialHealthScoreScreenState extends State<FinancialHealthScoreScreen>
   }
 
   void _shareScore(_HealthResult result) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${result.emoji} My Financial Health Score is ${result.score}/100 — ${result.rating}! Check yours on FinCalc Pro.'),
-        backgroundColor: AppColors.primary,
-        duration: const Duration(seconds: 3),
-      ),
+    Share.share(
+      '${result.emoji} My Financial Health Score: ${result.score}/100 — ${result.rating}!\n\n'
+      '📊 Top tip: ${result.tips.isNotEmpty ? result.tips.first : "Keep it up!"}\n\n'
+      'Check your score on FinCalc Pro',
     );
   }
 }
